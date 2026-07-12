@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppState } from "@/components/app/AppStateProvider";
+import { publicPath } from "@/utils/publicPath";
 import { scrollToSection } from "@/utils/scrollToSection";
 import Image from "next/image";
 import styles from "../site.module.css";
@@ -29,7 +30,7 @@ export function ShawarmaProgress() {
         aria-hidden="true"
       >
         <Image
-          src="/icons/icon.svg"
+          src={publicPath("/icons/icon.svg")}
           alt=""
           width={28}
           height={28}
