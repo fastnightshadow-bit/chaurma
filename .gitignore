@@ -1,0 +1,17 @@
+node_modules/
+.packages/
+.pnpm-store/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+work/
+outputs/
+.agents/
+.codex/
+.gitdata/
+*.tsbuildinfo
+*.log
+.env*
+!.env.example
