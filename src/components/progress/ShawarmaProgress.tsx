@@ -16,19 +16,21 @@ const stages = [
 export function ShawarmaProgress() {
   const { state } = useAppState();
   const activeIndex = stages.findIndex(({ id }) => id === state.activeSection);
+  const activeCenter = ((activeIndex + 0.5) / stages.length) * 100;
 
   return (
-    <nav className={styles.progress} aria-label="Этапы заказа">
+    <nav
+      className={styles.progress}
+      aria-label="Этапы заказа"
+      style={
+        {
+          "--progress-stage-count": stages.length,
+          "--progress-active-center": `${activeCenter}%`,
+        } as React.CSSProperties
+      }
+    >
       <div className={styles.progressTrack} aria-hidden="true" />
-      <span
-        className={styles.progressShawarma}
-        style={
-          {
-            "--progress-position": `${12.5 + activeIndex * 25}%`,
-          } as React.CSSProperties
-        }
-        aria-hidden="true"
-      >
+      <span className={styles.progressShawarma} aria-hidden="true">
         <Image
           src={publicPath("/icons/icon.svg")}
           alt=""
