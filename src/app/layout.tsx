@@ -17,28 +17,32 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.origin),
   title: siteConfig.seo.title,
   description: siteConfig.seo.description,
-  alternates: { canonical: "/" },
+  alternates: { canonical: siteConfig.origin },
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    url: "/",
+    url: siteConfig.origin,
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
     images: [
-      { url: "/images/brand/og-placeholder.png", width: 1200, height: 630 },
+      {
+        url: `${siteConfig.origin}/images/brand/og-placeholder.png`,
+        width: 1200,
+        height: 630,
+      },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
-    images: ["/images/brand/og-placeholder.png"],
+    images: [`${siteConfig.origin}/images/brand/og-placeholder.png`],
   },
   icons: {
-    icon: "/icons/icon.svg",
-    apple: "/icons/apple-touch-icon.png",
+    icon: `${siteConfig.origin}/icons/icon.svg`,
+    apple: `${siteConfig.origin}/icons/apple-touch-icon.png`,
   },
-  manifest: "/manifest.webmanifest",
+  manifest: `${siteConfig.origin}/manifest.webmanifest`,
 };
 
 export const viewport: Viewport = {
