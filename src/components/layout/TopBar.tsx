@@ -3,6 +3,7 @@
 import { useAppState } from "@/components/app/AppStateProvider";
 import { locations } from "@/data/locations";
 import { useBusinessStatus } from "@/hooks/useBusinessStatus";
+import { publicPath } from "@/utils/publicPath";
 import { scrollToSection } from "@/utils/scrollToSection";
 import { MapPin, Phone } from "lucide-react";
 import Image from "next/image";
@@ -38,7 +39,7 @@ export function TopBar() {
       <div className={styles.topBarMain}>
         <span className={styles.brandMark} aria-hidden="true">
           <Image
-            src="/icons/icon.svg"
+            src={publicPath("/icons/icon.svg")}
             alt=""
             width={32}
             height={32}
