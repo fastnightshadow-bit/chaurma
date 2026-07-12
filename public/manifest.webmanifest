@@ -1,0 +1,20 @@
+{
+  "name": "Шаурма №1 Халял",
+  "short_name": "Шаурма №1",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#191815",
+  "theme_color": "#191815",
+  "icons": [
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

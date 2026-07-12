@@ -1,0 +1,78 @@
+:root {
+  color-scheme: dark;
+  --color-bg: #191815;
+  --color-surface: #23211d;
+  --color-elevated: #2b2924;
+  --color-border: #3c3932;
+  --color-text: #fff8ec;
+  --color-text-secondary: #bdb4a6;
+  --color-muted: #958d81;
+  --color-accent: #f2a51b;
+  --color-accent-hover: #ffb52e;
+  --color-accent-pressed: #d98b0d;
+  --color-on-accent: #1a160d;
+  --color-open: #55a96c;
+  --color-closed: #d0746f;
+  --color-focus: #ffd166;
+  --topbar-full: 80px;
+  --topbar-compact: 56px;
+  --progress-height: 44px;
+  --bottom-nav-height: 64px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

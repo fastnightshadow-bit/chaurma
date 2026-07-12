@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Фирменный символ «Шаурма №1 Халял»</title>
+  <desc id="desc">Золотистая шаурма с мясом, салатом, томатами, красным луком и белым соусом</desc>
+  <defs>
+    <linearGradient id="lavash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFE09A"/>
+      <stop offset="0.42" stop-color="#EFB85B"/>
+      <stop offset="1" stop-color="#B96A25"/>
+    </linearGradient>
+    <linearGradient id="lavashLight" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#FFF0BE"/>
+      <stop offset="0.58" stop-color="#EFC16A"/>
+      <stop offset="1" stop-color="#C7792F"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F9D47E"/>
+      <stop offset="1" stop-color="#9C4E20"/>
+    </linearGradient>
+    <radialGradient id="meat" cx="35%" cy="25%" r="80%">
+      <stop offset="0" stop-color="#B95D2C"/>
+      <stop offset="0.55" stop-color="#7A341F"/>
+      <stop offset="1" stop-color="#442117"/>
+    </radialGradient>
+    <radialGradient id="tomato" cx="32%" cy="25%" r="76%">
+      <stop offset="0" stop-color="#FF6648"/>
+      <stop offset="0.68" stop-color="#D82D24"/>
+      <stop offset="1" stop-color="#9E181B"/>
+    </radialGradient>
+    <linearGradient id="lettuce" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#A6C93A"/>
+      <stop offset="0.55" stop-color="#5D8F2C"/>
+      <stop offset="1" stop-color="#315B24"/>
+    </linearGradient>
+    <linearGradient id="onion" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C96A8B"/>
+      <stop offset="1" stop-color="#7D294D"/>
+    </linearGradient>
+    <linearGradient id="sauce" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF5"/>
+      <stop offset="1" stop-color="#E8DFCF"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-25%" width="160%" height="170%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="10" dy="16" stdDeviation="15" flood-color="#2C150C" flood-opacity="0.22"/>
+    </filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <clipPath id="opening">
+      <ellipse cx="512" cy="246" rx="252" ry="142"/>
+    </clipPath>
+  </defs>
+
+  <g transform="rotate(22 512 512)" filter="url(#shadow)">
+    <!-- Back lettuce creates the open, fresh silhouette. -->
+    <path d="M284 252c-40-27-28-72 14-76-18-43 26-72 61-45 3-48 55-60 78-20 25-42 76-29 82 18 36-35 84-8 72 38 45-19 76 25 48 61 45 4 55 56 17 77l-55 40-265-7-58-38z" fill="url(#lettuce)" stroke="#315B24" stroke-width="14" stroke-linejoin="round"/>
+    <path d="M321 237c45 28 87 11 119-24 23 39 69 45 105 13 17 42 57 58 94 39" fill="none" stroke="#C4D95A" stroke-width="12" stroke-linecap="round" opacity="0.75"/>
+
+    <!-- Dark opening provides depth and keeps the filling readable. -->
+    <ellipse cx="512" cy="270" rx="250" ry="145" fill="#3A2118" stroke="url(#rim)" stroke-width="28"/>
+
+    <g clip-path="url(#opening)">
+      <ellipse cx="512" cy="278" rx="230" ry="120" fill="#4A281B"/>
+
+      <!-- Meat: few large pieces, not visual noise. -->
+      <path d="M333 235c9-51 64-78 110-47 33 23 28 74-8 94-45 25-112 5-102-47z" fill="url(#meat)" stroke="#512317" stroke-width="10"/>
+      <path d="M444 185c19-47 80-59 116-20 28 31 9 77-30 90-49 15-105-24-86-70z" fill="url(#meat)" stroke="#512317" stroke-width="10"/>
+      <path d="M554 205c28-42 91-38 116 7 20 38-8 78-49 82-51 5-94-47-67-89z" fill="url(#meat)" stroke="#512317" stroke-width="10"/>
+      <path d="M377 296c13-41 67-59 101-28 31 28 14 72-22 86-46 17-92-17-79-58z" fill="url(#meat)" stroke="#512317" stroke-width="10"/>
+      <path d="M500 286c20-43 78-53 111-17 29 32 7 76-34 85-49 10-97-26-77-68z" fill="url(#meat)" stroke="#512317" stroke-width="10"/>
+      <path d="M610 292c17-38 67-48 98-19 26 25 12 65-23 80-42 17-93-21-75-61z" fill="url(#meat)" stroke="#512317" stroke-width="10"/>
+
+      <!-- Tomato slices remain recognisable at favicon size. -->
+      <circle cx="357" cy="285" r="55" fill="url(#tomato)" stroke="#98181A" stroke-width="10"/>
+      <circle cx="630" cy="248" r="58" fill="url(#tomato)" stroke="#98181A" stroke-width="10"/>
+      <path d="M357 245v80m-38-40h76" stroke="#F7A04E" stroke-width="9" stroke-linecap="round" opacity="0.8"/>
+      <path d="M630 206v84m-40-42h80" stroke="#F7A04E" stroke-width="9" stroke-linecap="round" opacity="0.8"/>
+      <circle cx="357" cy="285" r="13" fill="#F8C66A"/>
+      <circle cx="630" cy="248" r="14" fill="#F8C66A"/>
+
+      <!-- Onion and lettuce accents. -->
+      <path d="M395 200c25 4 49 19 63 40" fill="none" stroke="url(#onion)" stroke-width="18" stroke-linecap="round"/>
+      <path d="M559 327c34-6 67 4 92 26" fill="none" stroke="url(#onion)" stroke-width="18" stroke-linecap="round"/>
+      <path d="M296 329c35-25 68-23 101 2m225-12c34-27 68-29 104-3" fill="none" stroke="#79A931" stroke-width="22" stroke-linecap="round"/>
+
+      <!-- White sauce is a single confident ribbon. -->
+      <path d="M345 217c52 43 84 24 124-7 42-33 71 2 105 23 37 23 69 9 105-17" fill="none" stroke="#8D6548" stroke-width="28" stroke-linecap="round" opacity="0.25"/>
+      <path d="M345 210c52 43 84 24 124-7 42-33 71 2 105 23 37 23 69 9 105-17" fill="none" stroke="url(#sauce)" stroke-width="20" stroke-linecap="round"/>
+    </g>
+
+    <!-- Main lavash cone. -->
+    <path d="M268 282c54 32 135 48 244 48s190-16 244-48l-92 546c-8 46-43 85-88 99-42 13-86 13-128 0-45-14-80-53-88-99z" fill="url(#lavash)" stroke="#9B501F" stroke-width="18" stroke-linejoin="round"/>
+
+    <!-- Folded front sheet gives the wrap its recognisable construction. -->
+    <path d="M271 286c57 29 130 43 218 44-37 73-68 159-79 251-12 99 3 202 41 307-45-22-78-61-87-108z" fill="url(#lavashLight)" stroke="#B76A28" stroke-width="11" stroke-linejoin="round"/>
+    <path d="M753 286c-57 29-130 43-218 44 37 73 68 159 79 251 12 99-3 202-41 307 45-22 78-61 87-108z" fill="#D9903D" opacity="0.32"/>
+
+    <!-- Warm grill marks are broad enough to survive downscaling. -->
+    <g fill="none" stroke="#9D4E22" stroke-width="17" stroke-linecap="round" opacity="0.72">
+      <path d="M354 385l70 42"/>
+      <path d="M331 492l72 43"/>
+      <path d="M337 612l70 41"/>
+      <path d="M376 742l58 35"/>
+      <path d="M604 412l66-39"/>
+      <path d="M624 529l70-42"/>
+      <path d="M622 653l64-38"/>
+      <path d="M598 775l53-31"/>
+    </g>
+    <g fill="none" stroke="#FFE4A0" stroke-width="10" stroke-linecap="round" opacity="0.5">
+      <path d="M391 349c63 17 151 20 236 0"/>
+      <path d="M437 874c49 21 101 22 151 0"/>
+    </g>
+
+    <!-- Crisp top rim returns the open-wrap contour after the body overlap. -->
+    <path d="M278 282c59 32 137 48 234 48s175-16 234-48" fill="none" stroke="#F8D17A" stroke-width="22" stroke-linecap="round"/>
+    <path d="M303 296c59 25 129 37 209 37s150-12 209-37" fill="none" stroke="#A95D27" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
+  </g>
+</svg>
