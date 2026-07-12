@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { publicPath } from "@/utils/publicPath";
 import styles from "../site.module.css";
 
 export function EmptyState({
@@ -11,7 +12,7 @@ export function EmptyState({
     <div className={styles.emptyState}>
       <Image
         className={styles.emptyStateIcon}
-        src="/icons/icon.svg"
+        src={publicPath("/icons/icon.svg")}
         alt=""
         width={64}
         height={64}
