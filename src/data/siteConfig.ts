@@ -3,8 +3,7 @@ import type { SiteConfig } from "../types/config.ts";
 export const siteConfig = {
   name: "Шаурма №1 Халял",
   shortName: "Шаурма №1",
-  // TODO: Replace the placeholder after the owner confirms the production domain. Canonical, robots and sitemap derive from this value.
-  origin: "https://example.com",
+  origin: "https://fastnightshadow-bit.github.io/chaurma",
   currency: "RUB",
   heroTitle: "Сочная шаурма. Горячая. Халял.",
   heroSubtitle: "Готовим только после заказа.",
