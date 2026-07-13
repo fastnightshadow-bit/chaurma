@@ -54,7 +54,9 @@ test("completes the primary pickup path and restores the cart", async ({
   ).toBeVisible();
 
   await page
-    .getByRole("button", { name: "Добавить: Классическая шаурма (пример)" })
+    .getByRole("button", {
+      name: "Добавить: Люля-кебаб в лаваше (Говядина)",
+    })
     .click();
   const menuCard = page
     .getByRole("region", { name: "Меню" })
@@ -62,7 +64,7 @@ test("completes the primary pickup path and restores the cart", async ({
     .filter({
       has: page.getByRole("heading", {
         level: 3,
-        name: "Классическая шаурма (пример)",
+        name: "Люля-кебаб в лаваше (Говядина)",
       }),
     });
   await expect(menuCard.getByRole("status")).toHaveText("1");
@@ -75,7 +77,7 @@ test("completes the primary pickup path and restores the cart", async ({
   await expect(
     cartRegion.getByRole("heading", { level: 2, name: "Корзина" }),
   ).toBeVisible();
-  await expect(cartRegion.getByText("290 ₽").first()).toBeVisible();
+  await expect(cartRegion.getByText("580 ₽").first()).toBeVisible();
 
   const callAction = cartRegion.getByRole("link", { name: /Позвонить/ });
   await expect(callAction).toHaveAttribute("href", /^tel:\+7/);
@@ -88,7 +90,7 @@ test("completes the primary pickup path and restores the cart", async ({
   await expect(
     cartRegion.getByRole("heading", {
       level: 3,
-      name: "Классическая шаурма (пример)",
+      name: "Люля-кебаб в лаваше (Говядина)",
     }),
   ).toBeVisible();
 
@@ -181,8 +183,8 @@ test("asks before resolving a cart older than 24 hours", async ({ page }) => {
         locationId: "frunze-46b",
         items: [
           {
-            id: "sample-classic-shawarma",
-            menuItemId: "sample-classic-shawarma",
+            id: "lula-beef-lavash",
+            menuItemId: "lula-beef-lavash",
             quantity: 1,
             unitPrice: 1,
             optionIds: [],
@@ -203,7 +205,7 @@ test("asks before resolving a cart older than 24 hours", async ({ page }) => {
     .click();
   await expect(dialog).toBeHidden();
   await expect(
-    page.getByRole("region", { name: "Корзина" }).getByText("290 ₽").first(),
+    page.getByRole("region", { name: "Корзина" }).getByText("580 ₽").first(),
   ).toBeVisible();
 });
 
@@ -239,13 +241,15 @@ test("keeps the cart usable in memory when localStorage is unavailable", async (
   });
   await page.goto("/");
   await page
-    .getByRole("button", { name: "Добавить: Классическая шаурма (пример)" })
+    .getByRole("button", {
+      name: "Добавить: Люля-кебаб в лаваше (Говядина)",
+    })
     .click();
   await expect(
     page.getByText("Корзина сохранится только до закрытия этой вкладки."),
   ).toBeVisible();
   await expect(
-    page.getByRole("region", { name: "Корзина" }).getByText("290 ₽").first(),
+    page.getByRole("region", { name: "Корзина" }).getByText("580 ₽").first(),
   ).toBeVisible();
 });
 
@@ -301,14 +305,14 @@ test("keeps item wishes scoped and persists the order comment", async ({
   await page.goto("/");
   await page
     .getByRole("button", {
-      name: "Добавить: Классическая шаурма (пример)",
+      name: "Добавить: Люля-кебаб в лаваше (Говядина)",
     })
     .click();
 
   const cart = page.getByRole("region", { name: "Корзина" });
   const cartItem = cart
     .getByRole("article")
-    .filter({ hasText: "Классическая шаурма (пример)" })
+    .filter({ hasText: "Люля-кебаб в лаваше (Говядина)" })
     .first();
 
   await cartItem.getByRole("button", { name: "Добавить пожелание" }).click();

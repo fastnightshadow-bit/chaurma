@@ -24,7 +24,7 @@ export function MenuSection() {
       <div className={styles.sectionHeading}>
         <span>Выберите блюда</span>
         <h2 id="menu-title">Меню</h2>
-        <p>Позиции и цены сейчас используются как демонстрационные примеры.</p>
+        <p>Меню доставки Яндекс Еды. На месте блюда и цены могут отличаться.</p>
       </div>
       <CategoryNavigation
         categories={menuCategories}

@@ -51,6 +51,7 @@ export function CartSection() {
       {!isHydrated ? (
         <div
           className={styles.cartLoading}
+          role="status"
           aria-label="Восстанавливаем корзину"
         />
       ) : null}

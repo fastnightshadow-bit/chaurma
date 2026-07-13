@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 
-import { menuCategories, menuItems } from "../../src/data/menu.ts";
+import { menuCategories, menuItems, menuSource } from "../../src/data/menu.ts";
 import { locations } from "../../src/data/locations.ts";
 import { siteConfig } from "../../src/data/siteConfig.ts";
 import { getBusinessStatus } from "../../src/services/businessStatus.ts";
@@ -23,6 +25,45 @@ test("accepts the centralized project data", () => {
   assert.doesNotThrow(() =>
     validateProjectData({ menuCategories, menuItems, locations, siteConfig }),
   );
+});
+
+test("matches the verified Yandex Food menu source", () => {
+  assert.deepEqual(
+    menuCategories.map(({ id, name }) => ({ id, name })),
+    [
+      { id: "shawarma", name: "Шаурма" },
+      { id: "separate-additions", name: "Добавки отдельно" },
+      { id: "hot-dogs", name: "Хот-доги" },
+      { id: "cold-drinks", name: "Холодные напитки" },
+      { id: "hot-snacks", name: "Горячие закуски" },
+    ],
+  );
+  assert.equal(menuItems.length, 37);
+  assert.equal(menuItems[0]?.name, "Люля-кебаб в лаваше (Говядина)");
+  assert.equal(menuItems[0]?.price, 580);
+  assert.equal(menuItems[0]?.weight, "420 г");
+  assert.equal(menuItems.at(-1)?.name, "Картошка фри");
+  assert.equal(menuItems.at(-1)?.price, 210);
+  assert.equal(menuItems.filter(({ image }) => image !== null).length, 37);
+  assert.ok(
+    menuItems.every(({ image }) => image?.src.startsWith("/images/menu/")),
+  );
+  assert.equal(new Set(menuItems.map(({ image }) => image?.src)).size, 24);
+  assert.ok(
+    menuItems.every(({ image }) =>
+      image ? existsSync(join(process.cwd(), "public", image.src)) : false,
+    ),
+  );
+  assert.ok(menuItems.every(({ isTemporaryData }) => !isTemporaryData));
+  assert.equal(menuSource.upstream, "Яндекс Еда");
+});
+
+test("contains no duplicate published menu cards", () => {
+  const cards = menuItems.map(
+    ({ name, weight, price }) => `${name}\u0000${weight}\u0000${price}`,
+  );
+
+  assert.equal(new Set(cards).size, menuItems.length);
 });
 
 test("publishes validated social proof for every location", () => {
