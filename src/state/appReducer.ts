@@ -1,5 +1,9 @@
 import type { AppAction } from "./actions.ts";
 import type { AppState } from "./initialState.ts";
+import {
+  ITEM_COMMENT_MAX_LENGTH,
+  ORDER_COMMENT_MAX_LENGTH,
+} from "../types/cart.ts";
 
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
@@ -30,16 +34,49 @@ export function appReducer(state: AppState, action: AppAction): AppState {
               ),
             },
           };
-    case "cart/remove":
+    case "cart/remove": {
+      const items = state.cart.items.filter(
+        (item) => item.id !== action.itemId,
+      );
       return {
         ...state,
         cart: {
           ...state.cart,
-          items: state.cart.items.filter((item) => item.id !== action.itemId),
+          items,
+          orderComment: items.length ? state.cart.orderComment : "",
+        },
+      };
+    }
+    case "cart/setItemComment":
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          items: state.cart.items.map((item) =>
+            item.id === action.itemId
+              ? {
+                  ...item,
+                  comment: action.comment
+                    .trim()
+                    .slice(0, ITEM_COMMENT_MAX_LENGTH),
+                }
+              : item,
+          ),
+        },
+      };
+    case "cart/setOrderComment":
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          orderComment: action.comment.slice(0, ORDER_COMMENT_MAX_LENGTH),
         },
       };
     case "cart/clear":
-      return { ...state, cart: { ...state.cart, items: [] } };
+      return {
+        ...state,
+        cart: { ...state.cart, items: [], orderComment: "" },
+      };
     case "cart/restore":
       return {
         ...state,

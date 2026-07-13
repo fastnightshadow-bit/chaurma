@@ -9,6 +9,12 @@ export type AppAction =
       readonly quantity: number;
     }
   | { readonly type: "cart/remove"; readonly itemId: string }
+  | {
+      readonly type: "cart/setItemComment";
+      readonly itemId: string;
+      readonly comment: string;
+    }
+  | { readonly type: "cart/setOrderComment"; readonly comment: string }
   | { readonly type: "cart/clear" }
   | {
       readonly type: "cart/restore";

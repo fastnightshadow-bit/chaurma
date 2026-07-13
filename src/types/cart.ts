@@ -1,3 +1,6 @@
+export const ITEM_COMMENT_MAX_LENGTH = 120;
+export const ORDER_COMMENT_MAX_LENGTH = 200;
+
 export interface CartItem {
   readonly id: string;
   readonly menuItemId: string;
@@ -10,10 +13,11 @@ export interface CartItem {
 export interface CartSnapshot {
   readonly locationId: string;
   readonly items: readonly CartItem[];
+  readonly orderComment: string;
 }
 
 export interface StoredCart extends CartSnapshot {
-  readonly version: 1;
+  readonly version: 2;
   readonly savedAt: string;
 }
 

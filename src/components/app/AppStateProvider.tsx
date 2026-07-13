@@ -89,7 +89,7 @@ export function AppStateProvider({
         const snapshot =
           choice === "refresh"
             ? refreshCartPrices(state.cart, menuItems)
-            : { ...state.cart, items: [] };
+            : { ...state.cart, items: [], orderComment: "" };
         dispatch({ type: "cart/resolveStale", snapshot });
       },
     }),

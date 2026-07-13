@@ -14,7 +14,7 @@ export interface AppState {
 export const initialState: AppState = {
   activeSection: "home",
   selectedLocationId: locations[0].id,
-  cart: { locationId: locations[0].id, items: [] },
+  cart: { locationId: locations[0].id, items: [], orderComment: "" },
   cartRestoreStatus: "idle",
   isOrderPresentationOpen: false,
 };

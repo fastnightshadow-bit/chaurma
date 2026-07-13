@@ -5,7 +5,7 @@ import { locations } from "@/data/locations";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import type { CartSnapshot } from "@/types/cart";
-import { X } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import styles from "../site.module.css";
 
@@ -77,10 +77,21 @@ export function OrderPresentationModal({
                 {menuItem?.name ?? "Позиция из прошлого заказа"}
               </strong>
               <span>{item.unitPrice * item.quantity} ₽</span>
-              {item.comment ? <p>{item.comment}</p> : null}
+              {item.comment ? (
+                <p className={styles.presentationItemComment}>
+                  <MessageCircle size={20} aria-hidden="true" />
+                  <span>{item.comment}</span>
+                </p>
+              ) : null}
             </article>
           );
         })}
+        {cart.orderComment ? (
+          <section className={styles.presentationOrderComment}>
+            <h3>Комментарий ко всему заказу</h3>
+            <p>{cart.orderComment}</p>
+          </section>
+        ) : null}
       </div>
       <footer>
         <span>Итого</span>

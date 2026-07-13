@@ -14,6 +14,7 @@ import { CartItem } from "./CartItem";
 import { CartSummary } from "./CartSummary";
 import { ClearCartButton } from "./ClearCartButton";
 import { OrderPresentationModal } from "./OrderPresentationModal";
+import { OrderCommentField } from "./OrderCommentField";
 
 export function CartSection() {
   const { state, dispatch, isHydrated, storageUnavailable, resolveStaleCart } =
@@ -81,6 +82,7 @@ export function CartSection() {
               />
             ))}
           </div>
+          <OrderCommentField />
           <CartSummary location={location} total={total} />
           <div className={styles.cartActions}>
             <a className={styles.primaryButton} href={`tel:${location.phone}`}>

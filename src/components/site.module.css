@@ -812,6 +812,118 @@
 .cartItemBottom > strong {
   color: var(--color-accent);
 }
+.cartItemComment {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-left: 2px solid var(--color-accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--color-elevated);
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.cartItemComment svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--color-accent);
+}
+.cartCommentToggle {
+  color: var(--color-accent);
+}
+.commentEditor {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  animation: comment-editor-in 180ms ease-out both;
+}
+.commentEditor label,
+.orderCommentField label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 750;
+}
+.commentEditor textarea,
+.orderCommentField textarea {
+  width: 100%;
+  min-height: 76px;
+  resize: vertical;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  outline: none;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  transition: border-color 180ms ease-out;
+}
+.commentEditor textarea:focus,
+.orderCommentField textarea:focus {
+  border-color: var(--color-accent);
+}
+.commentEditor textarea::placeholder,
+.orderCommentField textarea::placeholder {
+  color: var(--color-muted);
+}
+.commentEditorMeta,
+.orderCommentField > span {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+.commentEditorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 4px;
+}
+.commentEditorActions button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.commentSaveButton {
+  color: var(--color-accent);
+}
+.commentDeleteButton {
+  color: var(--color-closed);
+}
+.commentCancelButton {
+  color: var(--color-text-secondary);
+}
+.orderCommentField {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+}
+@keyframes comment-editor-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .cartSummary {
   display: grid;
   gap: 10px;
@@ -1101,6 +1213,40 @@
   grid-column: 1 / -1;
   margin: 0;
   font-size: 16px;
+}
+.presentationList .presentationItemComment {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-left: 4px solid #a96600;
+  background: #f5ead8;
+  font-size: 18px;
+  line-height: 26px;
+  overflow-wrap: anywhere;
+}
+.presentationItemComment svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+  color: #a96600;
+}
+.presentationOrderComment {
+  margin-top: 20px;
+  padding: 18px;
+  border: 2px solid #a96600;
+  border-radius: 8px;
+  background: #fff3df;
+}
+.presentationOrderComment h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 22px;
+}
+.presentationOrderComment p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  overflow-wrap: anywhere;
 }
 .presentation footer {
   display: flex;
@@ -1401,5 +1547,15 @@
   .reviewsLink:hover,
   .siteFooter a:hover {
     color: var(--color-text);
+  }
+  .cartCommentToggle:hover,
+  .commentSaveButton:hover {
+    color: var(--color-accent-hover);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .commentEditor {
+    animation: none;
   }
 }

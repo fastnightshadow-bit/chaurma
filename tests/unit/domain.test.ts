@@ -15,6 +15,7 @@ import { buildYandexMapEmbedUrl } from "../../src/services/mapProvider.ts";
 import { createRestaurantStructuredData } from "../../src/seo/structuredData.ts";
 import { initialState } from "../../src/state/initialState.ts";
 import { appReducer } from "../../src/state/appReducer.ts";
+import type { AppAction } from "../../src/state/actions.ts";
 import type { Location } from "../../src/types/location.ts";
 import { validateProjectData } from "../../src/utils/validateConfig.ts";
 
@@ -353,6 +354,7 @@ test("marks a saved cart stale after 24 hours without removing its items", () =>
           comment: "",
         },
       ],
+      orderComment: "",
     },
     savedAt,
   );
@@ -368,7 +370,7 @@ test("marks a saved cart stale after 24 hours without removing its items", () =>
 
 test("uses the configured cart age threshold", () => {
   const stored = createStoredCart(
-    { locationId: locations[0].id, items: [] },
+    { locationId: locations[0].id, items: [], orderComment: "" },
     new Date("2026-01-01T00:00:00.000Z"),
   );
   const result = readStoredCart(
@@ -398,6 +400,7 @@ test("refreshes prices in a stale cart without removing its items", () => {
         comment: "",
       },
     ],
+    orderComment: "",
   };
   const refreshed = refreshCartPrices(snapshot, menuItems);
   assert.equal(refreshed.items.length, 1);
@@ -431,6 +434,7 @@ test("refreshes the base price and selected option prices", () => {
         comment: "",
       },
     ],
+    orderComment: "",
   };
   assert.equal(
     refreshCartPrices(snapshot, menuWithOption).items[0]?.unitPrice,
@@ -462,4 +466,106 @@ test("adds, changes, and removes cart items through the reducer", () => {
     itemId: item.id,
   });
   assert.equal(removed.cart.items.length, 0);
+});
+
+test("updates a preparation request only for the selected cart line", () => {
+  const firstItem = {
+    id: "cart-1",
+    menuItemId: menuItems[0].id,
+    quantity: 1,
+    unitPrice: menuItems[0].price,
+    optionIds: [],
+    comment: "",
+  };
+  const secondItem = {
+    ...firstItem,
+    id: "cart-2",
+    menuItemId: menuItems[1].id,
+  };
+  const state = {
+    ...initialState,
+    cart: {
+      ...initialState.cart,
+      items: [firstItem, secondItem],
+      orderComment: "",
+    },
+  };
+  const action = {
+    type: "cart/setItemComment",
+    itemId: firstItem.id,
+    comment: `  ${"Без лука ".repeat(20)}  `,
+  } as unknown as AppAction;
+
+  const updated = appReducer(state, action);
+
+  assert.equal(updated.cart.items[0]?.comment.length, 120);
+  assert.match(updated.cart.items[0]?.comment ?? "", /^Без лука/);
+  assert.equal(updated.cart.items[1]?.comment, "");
+});
+
+test("stores and clears the order-wide comment independently", () => {
+  const item = {
+    id: "cart-1",
+    menuItemId: menuItems[0].id,
+    quantity: 1,
+    unitPrice: menuItems[0].price,
+    optionIds: [],
+    comment: "Без лука",
+  };
+  const state = {
+    ...initialState,
+    cart: { ...initialState.cart, items: [item], orderComment: "" },
+  };
+  const updated = appReducer(state, {
+    type: "cart/setOrderComment",
+    comment: "Буду через 15 минут",
+  } as unknown as AppAction);
+
+  assert.equal(updated.cart.orderComment, "Буду через 15 минут");
+  assert.equal(updated.cart.items[0]?.comment, "Без лука");
+
+  const cleared = appReducer(updated, { type: "cart/clear" });
+  assert.equal(cleared.cart.orderComment, "");
+  assert.equal(cleared.cart.items.length, 0);
+});
+
+test("persists version 2 comments and migrates version 1 carts", () => {
+  const snapshot = {
+    locationId: locations[0].id,
+    orderComment: "Буду через 15 минут",
+    items: [
+      {
+        id: "cart-1",
+        menuItemId: menuItems[0].id,
+        quantity: 1,
+        unitPrice: menuItems[0].price,
+        optionIds: [],
+        comment: "Без лука",
+      },
+    ],
+  };
+  const stored = createStoredCart(snapshot, new Date("2026-07-13T10:00:00Z"));
+
+  assert.equal(stored.version, 2);
+  assert.deepEqual(
+    readStoredCart(JSON.stringify(stored), new Date("2026-07-13T11:00:00Z")),
+    { status: "fresh", snapshot },
+  );
+
+  const versionOne = {
+    version: 1,
+    savedAt: "2026-07-13T10:00:00.000Z",
+    locationId: locations[0].id,
+    items: snapshot.items,
+  };
+  assert.deepEqual(
+    readStoredCart(
+      JSON.stringify(versionOne),
+      new Date("2026-07-13T11:00:00Z"),
+    ),
+    {
+      status: "fresh",
+      snapshot: { ...snapshot, orderComment: "" },
+    },
+  );
 });

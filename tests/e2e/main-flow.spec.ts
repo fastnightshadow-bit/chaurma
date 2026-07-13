@@ -294,3 +294,52 @@ test("updates social proof with the selected location and exposes safe external 
     )
     .toBe(true);
 });
+
+test("keeps item wishes scoped and persists the order comment", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", {
+      name: "Добавить: Классическая шаурма (пример)",
+    })
+    .click();
+
+  const cart = page.getByRole("region", { name: "Корзина" });
+  const cartItem = cart
+    .getByRole("article")
+    .filter({ hasText: "Классическая шаурма (пример)" })
+    .first();
+
+  await cartItem.getByRole("button", { name: "Добавить пожелание" }).click();
+  await cartItem.getByPlaceholder("Например: без лука").fill("Без лука");
+  await cartItem.getByRole("button", { name: "Сохранить пожелание" }).click();
+  await expect(cartItem.getByText("Без лука")).toBeVisible();
+
+  const orderComment = cart.getByLabel("Комментарий ко всему заказу");
+  await orderComment.fill("Буду через 15 минут");
+
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    )
+    .toBe(true);
+
+  await cart.getByRole("button", { name: "Показать заказ продавцу" }).click();
+  const presentation = page.getByRole("dialog", { name: "Мой заказ" });
+  await expect(presentation.getByText("Без лука")).toBeVisible();
+  await expect(presentation.getByText("Буду через 15 минут")).toBeVisible();
+  await page.getByRole("button", { name: "Закрыть заказ" }).click();
+
+  await page.reload();
+  await expect(cartItem.getByText("Без лука")).toBeVisible();
+  await expect(orderComment).toHaveValue("Буду через 15 минут");
+
+  await cartItem.getByRole("button", { name: "Изменить пожелание" }).click();
+  await cartItem.getByRole("button", { name: "Удалить пожелание" }).click();
+  await expect(
+    cartItem.getByRole("button", { name: "Добавить пожелание" }),
+  ).toBeVisible();
+});
