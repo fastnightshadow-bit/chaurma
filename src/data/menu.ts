@@ -1,4 +1,5 @@
 import type { MenuCategory, MenuItem } from "../types/menu.ts";
+import { publicPath } from "../utils/publicPath.ts";
 
 export const menuSource = {
   url: "https://yandex.ru/maps/org/shaurma_halal_1/53165453878/menu/",
@@ -71,7 +72,7 @@ function createMenuItem(
   return {
     ...item,
     image: {
-      src: imageSrc,
+      src: publicPath(imageSrc),
       alt: `Фотография позиции «${item.name}»`,
       width: 960,
       height: 720,
