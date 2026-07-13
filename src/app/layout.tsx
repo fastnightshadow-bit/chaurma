@@ -13,6 +13,8 @@ const manrope = localFont({
   fallback: ["Arial", "sans-serif"],
 });
 
+const socialImageUrl = `${siteConfig.origin}/images/brand/og-shawarma-no1.png`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.origin),
   title: siteConfig.seo.title,
@@ -26,9 +28,10 @@ export const metadata: Metadata = {
     description: siteConfig.seo.description,
     images: [
       {
-        url: `${siteConfig.origin}/images/brand/og-placeholder.png`,
+        url: socialImageUrl,
         width: 1200,
         height: 630,
+        alt: "Шаурма №1 Халяль — свежая горячая шаурма в Ярославле",
       },
     ],
   },
@@ -36,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
-    images: [`${siteConfig.origin}/images/brand/og-placeholder.png`],
+    images: [socialImageUrl],
   },
   icons: {
     icon: `${siteConfig.origin}/icons/icon.svg`,
