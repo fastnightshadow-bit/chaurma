@@ -2,6 +2,46 @@ import { expect, test } from "@playwright/test";
 
 const cartStorageKey = "shawarma-no1-cart-v1";
 
+test("renders the art-directed shawarma photograph for the current viewport", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const isMobile = (page.viewportSize()?.width ?? 0) <= 760;
+  const expectedSource = isMobile
+    ? "hero-shawarma-mobile.webp"
+    : "hero-shawarma.webp";
+  const expectedNaturalWidth = isMobile ? 900 : 1600;
+  const expectedVisualScale = isMobile ? 1.3 : 1;
+
+  const heroImage = page.getByRole("img", {
+    name: "Шаурма с мясом, свежими овощами и фирменным соусом",
+  });
+  await expect(heroImage).toBeVisible();
+  await expect
+    .poll(() =>
+      heroImage.evaluate((image: HTMLImageElement) => ({
+        complete: image.complete,
+        currentSource: new URL(image.currentSrc).pathname,
+        naturalWidth: image.naturalWidth,
+        objectFit: getComputedStyle(image).objectFit,
+        visualScale: (() => {
+          const transform = getComputedStyle(image).transform;
+          return transform === "none"
+            ? 1
+            : Number(transform.slice(7, -1).split(",")[0]);
+        })(),
+      })),
+    )
+    .toEqual({
+      complete: true,
+      currentSource: expect.stringContaining(expectedSource),
+      naturalWidth: expectedNaturalWidth,
+      objectFit: "cover",
+      visualScale: expectedVisualScale,
+    });
+});
+
 test("completes the primary pickup path and restores the cart", async ({
   page,
 }) => {
@@ -55,8 +95,79 @@ test("completes the primary pickup path and restores the cart", async ({
   const routeAction = page.getByRole("link", { name: "Построить маршрут" });
   const routeHref = await routeAction.getAttribute("href");
   expect(routeHref).not.toBeNull();
-  expect(new URL(routeHref!).searchParams.get("rtext")).toBe(
-    "~просп. Фрунзе, 46Б, Ярославль",
+  const routeUrl = new URL(routeHref!);
+  expect(routeUrl.pathname).toBe("/maps/org/shaurma_halal_1/53165453878");
+  expect(routeUrl.searchParams.get("mode")).toBe("routes");
+  expect(routeUrl.searchParams.get("rtext")).toBe("~57.587358,39.9025");
+});
+
+test("enables map interaction without trapping mobile page scrolling", async ({
+  page,
+}) => {
+  await page.goto("/#route");
+
+  const routeSection = page.locator("#route");
+  const map = routeSection.locator("iframe");
+  await expect(map).toBeVisible();
+
+  const isMobile = (page.viewportSize()?.width ?? 0) <= 760;
+  if (isMobile) {
+    const enableInteraction = routeSection.getByRole("button", {
+      name: "Управлять картой",
+    });
+    await expect(enableInteraction).toBeVisible();
+    await expect
+      .poll(() => map.evaluate((node) => getComputedStyle(node).pointerEvents))
+      .toBe("none");
+
+    await enableInteraction.click();
+    await expect
+      .poll(() => map.evaluate((node) => getComputedStyle(node).pointerEvents))
+      .toBe("auto");
+
+    await routeSection
+      .getByRole("button", { name: "Закончить работу с картой" })
+      .click();
+    await expect
+      .poll(() => map.evaluate((node) => getComputedStyle(node).pointerEvents))
+      .toBe("none");
+  } else {
+    await expect
+      .poll(() => map.evaluate((node) => getComputedStyle(node).pointerEvents))
+      .toBe("auto");
+    await expect(
+      routeSection.getByRole("button", { name: "Управлять картой" }),
+    ).toBeHidden();
+  }
+});
+
+test("switches the map marker and exact route with the selected location", async ({
+  page,
+}) => {
+  await page.goto("/#route");
+
+  const routeSection = page.locator("#route");
+  const map = routeSection.locator("iframe");
+  const routeAction = routeSection.getByRole("link", {
+    name: "Построить маршрут",
+  });
+
+  await expect(map).toHaveAttribute("src", /oid=53165453878/);
+  await expect(routeAction).toHaveAttribute(
+    "href",
+    /shaurma_halal_1\/53165453878.*rtext=%7E57\.587358%2C39\.9025/,
+  );
+
+  await page
+    .getByRole("group", { name: "Выберите точку" })
+    .getByRole("button")
+    .nth(1)
+    .click();
+
+  await expect(map).toHaveAttribute("src", /oid=148714028831/);
+  await expect(routeAction).toHaveAttribute(
+    "href",
+    /shaurma_khalyal_1\/148714028831.*rtext=%7E57\.566177%2C39\.930994/,
   );
 });
 
@@ -136,4 +247,50 @@ test("keeps the cart usable in memory when localStorage is unavailable", async (
   await expect(
     page.getByRole("region", { name: "Корзина" }).getByText("290 ₽").first(),
   ).toBeVisible();
+});
+
+test("updates social proof with the selected location and exposes safe external links", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const reviews = page.getByRole("region", { name: "Нас выбирают" });
+  await expect(reviews.getByText("4,9")).toBeVisible();
+  await expect(reviews.getByText("371 оценка")).toBeVisible();
+  await expect(reviews.getByText("244 отзыва")).toBeVisible();
+  await expect(
+    reviews.getByRole("link", { name: "Читать отзывы на Яндекс Картах" }),
+  ).toHaveAttribute(
+    "href",
+    "https://yandex.ru/maps/org/shaurma_halal_1/53165453878",
+  );
+
+  await page
+    .getByRole("group", { name: "Выберите точку" })
+    .getByRole("button")
+    .nth(1)
+    .click();
+
+  await expect(reviews.getByText("4,7")).toBeVisible();
+  await expect(reviews.getByText("14 оценок")).toBeVisible();
+  await expect(reviews.getByText("12 отзывов")).toBeVisible();
+  await expect(
+    reviews.getByRole("link", { name: "Читать отзывы на Яндекс Картах" }),
+  ).toHaveAttribute(
+    "href",
+    "https://yandex.ru/maps/org/shaurma_khalyal_1/148714028831",
+  );
+
+  const vkLink = page.getByRole("link", { name: "Мы во ВКонтакте" });
+  await expect(vkLink).toHaveAttribute("href", "https://vk.com/shaurmahalal1");
+  await expect(vkLink).toHaveAttribute("target", "_blank");
+  await expect(vkLink).toHaveAttribute("rel", "noopener noreferrer");
+
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    )
+    .toBe(true);
 });

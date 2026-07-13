@@ -83,6 +83,21 @@ const locationSchema = z.object({
   scheduleIsConfirmed: z.boolean(),
   mapUrl: z.url(),
   socialLinks: z.array(z.url()),
+  socialProof: z.object({
+    rating: z.number().min(0).max(5),
+    ratingCount: z.number().int().nonnegative(),
+    reviewCount: z.number().int().nonnegative(),
+    reviewsUrl: z.url().refine(
+      (value) => {
+        const url = new URL(value);
+        return url.protocol === "https:" && url.hostname === "yandex.ru";
+      },
+      { message: "Reviews URL must be a secure Yandex Maps URL" },
+    ),
+    highlights: z
+      .array(z.string().trim().min(1).max(80))
+      .length(3, "Exactly three review highlights are required"),
+  }),
   priceRange: z.string().trim().min(1).nullable(),
   isTemporarilyUnavailable: z.boolean(),
   isTemporaryData: z.boolean(),

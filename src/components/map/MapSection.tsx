@@ -3,7 +3,7 @@
 import { useAppState } from "@/components/app/AppStateProvider";
 import { locations } from "@/data/locations";
 import { useBusinessStatus } from "@/hooks/useBusinessStatus";
-import { Clock3, MapPin, Phone } from "lucide-react";
+import { Clock3, Hand, MapPin, Phone, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import styles from "../site.module.css";
 import { LocationSwitcher } from "./LocationSwitcher";
@@ -15,6 +15,7 @@ export function MapSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [mapEnabled, setMapEnabled] = useState(false);
   const [mapUrl, setMapUrl] = useState<string | null>(null);
+  const [mapInteractionEnabled, setMapInteractionEnabled] = useState(false);
   const [mapState, setMapState] = useState<
     "idle" | "loading" | "ready" | "error"
   >("idle");
@@ -42,6 +43,7 @@ export function MapSection() {
     if (!mapEnabled) return;
     let cancelled = false;
 
+    setMapInteractionEnabled(false);
     setMapState("loading");
     setMapUrl(null);
     void import("@/services/mapProvider")
@@ -57,6 +59,16 @@ export function MapSection() {
       cancelled = true;
     };
   }, [location, mapEnabled]);
+
+  useEffect(() => {
+    if (!mapInteractionEnabled) return;
+
+    const stopMapInteraction = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMapInteractionEnabled(false);
+    };
+    window.addEventListener("keydown", stopMapInteraction);
+    return () => window.removeEventListener("keydown", stopMapInteraction);
+  }, [mapInteractionEnabled]);
 
   return (
     <section
@@ -88,7 +100,9 @@ export function MapSection() {
               : "Уточнить"}
         </span>
       </div>
-      <div className={styles.mapFrame}>
+      <div
+        className={`${styles.mapFrame} ${mapInteractionEnabled ? styles.mapFrameInteractive : ""}`}
+      >
         {mapUrl ? (
           <iframe
             key={mapUrl}
@@ -102,6 +116,29 @@ export function MapSection() {
         ) : null}
         {mapState !== "ready" ? (
           <MapPlaceholder loading={mapState !== "error"} />
+        ) : null}
+        {mapState === "ready" && !mapInteractionEnabled ? (
+          <div className={styles.mapInteractionGuard}>
+            <button
+              type="button"
+              className={styles.mapInteractionButton}
+              onClick={() => setMapInteractionEnabled(true)}
+            >
+              <Hand size={18} aria-hidden="true" />
+              Управлять картой
+            </button>
+          </div>
+        ) : null}
+        {mapState === "ready" && mapInteractionEnabled ? (
+          <button
+            type="button"
+            className={styles.mapInteractionExit}
+            aria-label="Закончить работу с картой"
+            title="Вернуть прокрутку страницы"
+            onClick={() => setMapInteractionEnabled(false)}
+          >
+            <X size={20} aria-hidden="true" />
+          </button>
         ) : null}
       </div>
       {mapState === "error" ? (

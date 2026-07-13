@@ -348,14 +348,31 @@
   overflow: hidden;
 }
 
-.heroVisual .foodPlaceholder {
+.heroPicture {
   position: absolute;
-  top: -8%;
-  right: -22%;
-  width: 116%;
-  height: 72%;
-  border-radius: 0;
-  border: 0;
+  inset: 0;
+}
+
+.heroVisual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25, 24, 21, 0.02) 34%,
+      rgba(25, 24, 21, 0.58) 66%,
+      var(--color-bg) 92%
+    ),
+    linear-gradient(90deg, rgba(25, 24, 21, 0.24), transparent 66%);
+  pointer-events: none;
+}
+
+.heroImage {
+  object-fit: cover;
+  object-position: 50% 50%;
+  transform: scale(1.3);
+  transform-origin: right bottom;
 }
 
 .heroContent {
@@ -363,7 +380,7 @@
   z-index: 2;
   width: min(100%, 460px);
   padding-top: 24px;
-  background: rgba(25, 24, 21, 0.78);
+  background: transparent;
 }
 
 .eyebrow,
@@ -836,6 +853,120 @@
   gap: 10px;
   margin-top: 16px;
 }
+
+.reviewsSection {
+  background: var(--color-surface);
+}
+
+.ratingSummary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ratingValue {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--color-accent);
+}
+
+.ratingValue svg {
+  align-self: center;
+  fill: currentColor;
+}
+
+.ratingValue strong {
+  font-size: 32px;
+  line-height: 36px;
+}
+
+.ratingValue span,
+.ratingCounts,
+.reviewSummaryLabel {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.ratingCounts {
+  display: grid;
+  gap: 3px;
+}
+
+.reviewSummaryLabel {
+  margin: 16px 0 10px;
+}
+
+.reviewHighlights {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reviewHighlights li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.reviewHighlights li::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.reviewsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 18px;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.siteFooter {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 20px 16px calc(env(safe-area-inset-bottom) + 104px);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.siteFooter a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.vkIcon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  color: var(--color-text);
+  font-size: 10px;
+  font-weight: 800;
+}
 .inlineNotice,
 .closedNotice {
   padding: 12px;
@@ -1016,6 +1147,9 @@
   border-color: var(--color-accent);
   background: var(--color-elevated);
 }
+.locationSwitcher .status-closed {
+  color: #d47772;
+}
 .locationSwitcher strong {
   font-size: 13px;
 }
@@ -1060,14 +1194,19 @@
   width: 100%;
   height: 100%;
   border: 0;
-  pointer-events: none;
+  pointer-events: auto;
 }
 .mapFrame .mapPlaceholder {
   position: absolute;
   inset: 0;
+  z-index: 4;
   height: 100%;
   border: 0;
   border-radius: 0;
+}
+.mapInteractionGuard,
+.mapInteractionExit {
+  display: none;
 }
 .mapPlaceholder strong {
   z-index: 2;
@@ -1109,10 +1248,62 @@
   }
 }
 
+@media (hover: none), (pointer: coarse) {
+  .mapFrame iframe {
+    pointer-events: none;
+  }
+  .mapFrameInteractive iframe {
+    pointer-events: auto;
+  }
+  .mapInteractionGuard {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    touch-action: pan-y;
+  }
+  .mapInteractionButton,
+  .mapInteractionExit {
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--color-border);
+    background: rgba(31, 31, 28, 0.94);
+    color: var(--color-text-primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  .mapInteractionButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px;
+    border-radius: var(--radius-md);
+    pointer-events: auto;
+    touch-action: manipulation;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .mapInteractionExit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
 @media (min-width: 390px) {
   .topBar,
   .section,
-  .hero {
+  .hero,
+  .siteFooter {
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -1170,9 +1361,19 @@
   .hero {
     min-height: 620px;
   }
-  .heroVisual .foodPlaceholder {
-    right: -8%;
-    width: 82%;
+  .heroVisual::after {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(25, 24, 21, 0.92) 0%,
+        rgba(25, 24, 21, 0.66) 36%,
+        rgba(25, 24, 21, 0.08) 74%
+      ),
+      linear-gradient(0deg, var(--color-bg) 0%, transparent 38%);
+  }
+  .heroImage {
+    object-position: 58% 50%;
+    transform: none;
   }
   .menuList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1196,5 +1397,9 @@
   .iconButton:hover,
   .locationSwitcher button:hover {
     background: #302e29;
+  }
+  .reviewsLink:hover,
+  .siteFooter a:hover {
+    color: var(--color-text);
   }
 }

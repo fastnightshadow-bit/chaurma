@@ -55,6 +55,13 @@ export function createRestaurantStructuredData(
         ...(location.socialLinks.length > 0
           ? { sameAs: location.socialLinks }
           : {}),
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: location.socialProof.rating,
+          ratingCount: location.socialProof.ratingCount,
+          reviewCount: location.socialProof.reviewCount,
+          bestRating: 5,
+        },
         ...(location.priceRange ? { priceRange: location.priceRange } : {}),
         servesCuisine: ["Шаурма", "Быстрое питание"],
       };

@@ -21,9 +21,8 @@ export const locations = [
     addressRegion: "Ярославская область",
     addressCountry: "RU",
     phone: "+79997994564",
-    // TODO: Keep placeholder coordinates until the owner resolves the roughly 40 m difference between Yandex and 2GIS markers.
-    coordinates: { lat: 55.751244, lng: 37.618423 },
-    coordinatesAreConfirmed: false,
+    coordinates: { lat: 57.587358, lng: 39.9025 },
+    coordinatesAreConfirmed: true,
     // TODO: The preparation time is not published in the verified sources.
     preparationTime: "пример: 10–15 минут",
     // TODO: Yandex and Restaurant Guru show 10:00–23:00, while 2GIS showed Saturday until 24:00.
@@ -33,6 +32,17 @@ export const locations = [
     scheduleIsConfirmed: false,
     mapUrl: "https://yandex.ru/maps/org/shaurma_halal_1/53165453878",
     socialLinks: ["https://vk.com/shaurmahalal1"],
+    socialProof: {
+      rating: 4.9,
+      ratingCount: 371,
+      reviewCount: 244,
+      reviewsUrl: "https://yandex.ru/maps/org/shaurma_halal_1/53165453878",
+      highlights: [
+        "Большие порции и много мяса",
+        "Свежие овощи и фирменный соус",
+        "Хрустящий лаваш",
+      ],
+    },
     priceRange: "200–350 ₽",
     isTemporarilyUnavailable: false,
     isTemporaryData: true,
@@ -57,6 +67,17 @@ export const locations = [
     scheduleIsConfirmed: true,
     mapUrl: "https://yandex.ru/maps/org/shaurma_khalyal_1/148714028831",
     socialLinks: [],
+    socialProof: {
+      rating: 4.7,
+      ratingCount: 14,
+      reviewCount: 12,
+      reviewsUrl: "https://yandex.ru/maps/org/shaurma_khalyal_1/148714028831",
+      highlights: [
+        "Свежие овощи и фирменный соус",
+        "Быстрое приготовление",
+        "Доброжелательный персонал",
+      ],
+    },
     // TODO: The average check and on-site prices for this location are not published.
     priceRange: null,
     isTemporarilyUnavailable: false,

@@ -15,11 +15,69 @@ import { buildYandexMapEmbedUrl } from "../../src/services/mapProvider.ts";
 import { createRestaurantStructuredData } from "../../src/seo/structuredData.ts";
 import { initialState } from "../../src/state/initialState.ts";
 import { appReducer } from "../../src/state/appReducer.ts";
+import type { Location } from "../../src/types/location.ts";
 import { validateProjectData } from "../../src/utils/validateConfig.ts";
 
 test("accepts the centralized project data", () => {
   assert.doesNotThrow(() =>
     validateProjectData({ menuCategories, menuItems, locations, siteConfig }),
+  );
+});
+
+test("publishes validated social proof for every location", () => {
+  assert.deepEqual(
+    locations.map(({ socialProof }) => socialProof),
+    [
+      {
+        rating: 4.9,
+        ratingCount: 371,
+        reviewCount: 244,
+        reviewsUrl: "https://yandex.ru/maps/org/shaurma_halal_1/53165453878",
+        highlights: [
+          "Большие порции и много мяса",
+          "Свежие овощи и фирменный соус",
+          "Хрустящий лаваш",
+        ],
+      },
+      {
+        rating: 4.7,
+        ratingCount: 14,
+        reviewCount: 12,
+        reviewsUrl: "https://yandex.ru/maps/org/shaurma_khalyal_1/148714028831",
+        highlights: [
+          "Свежие овощи и фирменный соус",
+          "Быстрое приготовление",
+          "Доброжелательный персонал",
+        ],
+      },
+    ],
+  );
+});
+
+test("rejects invalid location social proof", () => {
+  const invalidLocations = [
+    {
+      ...locations[0],
+      socialProof: {
+        ...locations[0].socialProof,
+        rating: 5.1,
+        ratingCount: 1.5,
+        highlights: ["Only one"],
+        reviewsUrl: "javascript:alert(1)",
+      },
+    } as unknown as Location,
+    ...locations.slice(1),
+  ];
+
+  assert.throws(
+    () =>
+      validateProjectData({
+        menuCategories,
+        menuItems,
+        locations: invalidLocations,
+        siteConfig,
+      }),
+    /location|rating|review|url|highlight/i,
   );
 });
 
@@ -209,18 +267,33 @@ test("supports schedule intervals that cross midnight", () => {
 });
 
 test("uses the address when route coordinates are not confirmed", () => {
-  const url = buildRouteUrl(siteConfig.routeUrlTemplate, locations[0]);
+  const locationWithUnconfirmedCoordinates = {
+    ...locations[0],
+    coordinates: { lat: 55.751244, lng: 37.618423 },
+    coordinatesAreConfirmed: false,
+  };
+  const url = buildRouteUrl(
+    siteConfig.routeUrlTemplate,
+    locationWithUnconfirmedCoordinates,
+  );
   const destination = new URL(url).searchParams.get("rtext");
 
-  assert.equal(destination, `~${locations[0].address}`);
+  assert.equal(destination, `~${locationWithUnconfirmedCoordinates.address}`);
   assert.doesNotMatch(url, /55\.751244|37\.618423/);
 });
 
-test("uses confirmed coordinates for the route destination", () => {
-  const url = buildRouteUrl(siteConfig.routeUrlTemplate, locations[1]);
-  const destination = new URL(url).searchParams.get("rtext");
+test("routes to the exact Yandex organization marker for each location", () => {
+  const expectedDestinations = ["~57.587358,39.9025", "~57.566177,39.930994"];
 
-  assert.equal(destination, "~57.566177,39.930994");
+  locations.forEach((location, index) => {
+    const route = new URL(buildRouteUrl(siteConfig.routeUrlTemplate, location));
+    const organization = new URL(location.mapUrl);
+
+    assert.equal(route.pathname, organization.pathname);
+    assert.equal(route.searchParams.get("mode"), "routes");
+    assert.equal(route.searchParams.get("rtt"), "auto");
+    assert.equal(route.searchParams.get("rtext"), expectedDestinations[index]);
+  });
 });
 
 test("builds a Yandex widget URL for each selected location", () => {
@@ -243,14 +316,26 @@ test("publishes only confirmed location facts in Restaurant JSON-LD", () => {
 
   assert.equal(frunze46b.name, "Shaurma Halal 1");
   assert.equal(frunze46b.telephone, "+79997994564");
-  assert.equal("geo" in frunze46b, false);
+  assert.deepEqual(frunze46b.geo, {
+    "@type": "GeoCoordinates",
+    latitude: 57.587358,
+    longitude: 39.9025,
+  });
   assert.equal("openingHoursSpecification" in frunze46b, false);
   assert.deepEqual(frunze46b.sameAs, ["https://vk.com/shaurmahalal1"]);
+  assert.deepEqual(frunze46b.aggregateRating, {
+    "@type": "AggregateRating",
+    ratingValue: 4.9,
+    ratingCount: 371,
+    reviewCount: 244,
+    bestRating: 5,
+  });
 
   assert.equal(frunze75.name, "Шаурма Халяль 1");
   assert.equal(frunze75.telephone, "+79066366296");
   assert.equal("geo" in frunze75, true);
   assert.equal("openingHoursSpecification" in frunze75, true);
+  assert.equal(frunze75.aggregateRating.ratingValue, 4.7);
 });
 
 test("marks a saved cart stale after 24 hours without removing its items", () => {

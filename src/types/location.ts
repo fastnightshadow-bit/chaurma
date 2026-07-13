@@ -13,6 +13,14 @@ export interface ScheduleDay {
   readonly intervals: readonly ScheduleInterval[];
 }
 
+export interface LocationSocialProof {
+  readonly rating: number;
+  readonly ratingCount: number;
+  readonly reviewCount: number;
+  readonly reviewsUrl: string;
+  readonly highlights: readonly [string, string, string];
+}
+
 export interface Location {
   readonly id: string;
   readonly name: string;
@@ -32,6 +40,7 @@ export interface Location {
   readonly scheduleIsConfirmed: boolean;
   readonly mapUrl: string;
   readonly socialLinks: readonly string[];
+  readonly socialProof: LocationSocialProof;
   readonly priceRange: string | null;
   readonly isTemporarilyUnavailable: boolean;
   readonly isTemporaryData: boolean;
