@@ -2,6 +2,7 @@
 
 import { useAppState } from "@/components/app/AppStateProvider";
 import { locations } from "@/data/locations";
+import { siteConfig } from "@/data/siteConfig";
 import { useBusinessStatus } from "@/hooks/useBusinessStatus";
 import { publicPath } from "@/utils/publicPath";
 import { scrollToSection } from "@/utils/scrollToSection";
@@ -48,7 +49,7 @@ export function TopBar() {
           />
         </span>
         <div className={styles.brandText}>
-          <strong>Шаурма №1 Халял</strong>
+          <strong>{siteConfig.name}</strong>
           <span className={`${styles.status} ${styles[`status-${status}`]}`}>
             <i aria-hidden="true" /> {statusLabel}
           </span>

@@ -1,8 +1,8 @@
 import type { SiteConfig } from "../types/config.ts";
 
 export const siteConfig = {
-  name: "Шаурма №1 Халял",
-  shortName: "Шаурма №1",
+  name: "Шаурма Халяль 1",
+  shortName: "Шаурма Халяль 1",
   origin: "https://fastnightshadow-bit.github.io/chaurma",
   currency: "RUB",
   heroTitle: "Сочная шаурма. Горячая. Халял.",
@@ -12,9 +12,9 @@ export const siteConfig = {
   routeUrlTemplate: "https://yandex.ru/maps/?rtext=~{lat},{lng}&rtt=auto",
   mapProvider: "yandex",
   seo: {
-    title: "Шаурма Халяль 1 в Ярославле — две точки на Фрунзе",
+    title: "Шаурма Халяль 1 в Ярославле — меню и цены",
     description:
-      "Точки на проспекте Фрунзе, 46Б и 75 в Ярославле. Посмотрите меню, позвоните и постройте маршрут.",
+      "Меню и цены «Шаурма Халяль 1» в Ярославле. Адреса на проспекте Фрунзе, 46Б и 75, телефоны, отзывы и маршруты до обеих точек.",
   },
   isTemporaryData: true,
 } as const satisfies SiteConfig;

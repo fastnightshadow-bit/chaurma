@@ -78,7 +78,9 @@ export function MenuItemCard({
       <div className={styles.menuCardBody}>
         <div>
           <h3>{item.name}</h3>
-          <p>{item.description}</p>
+          {item.description !== "Не опубликовано" ? (
+            <p>{item.description}</p>
+          ) : null}
         </div>
         <span className={styles.weight}>{item.weight}</span>
         <div className={styles.menuCardFooter}>

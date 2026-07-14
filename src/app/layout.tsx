@@ -17,13 +17,29 @@ const socialImageUrl = `${siteConfig.origin}/images/brand/og-shawarma-no1.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.origin),
+  applicationName: siteConfig.name,
   title: siteConfig.seo.title,
   description: siteConfig.seo.description,
-  alternates: { canonical: siteConfig.origin },
+  alternates: {
+    canonical: siteConfig.origin,
+    languages: { "ru-RU": siteConfig.origin },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "ru_RU",
     url: siteConfig.origin,
+    siteName: siteConfig.name,
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
     images: [
@@ -31,7 +47,7 @@ export const metadata: Metadata = {
         url: socialImageUrl,
         width: 1200,
         height: 630,
-        alt: "Шаурма №1 Халяль — свежая горячая шаурма в Ярославле",
+        alt: `${siteConfig.name} — свежая горячая шаурма в Ярославле`,
       },
     ],
   },
@@ -43,7 +59,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: `${siteConfig.origin}/icons/icon.svg`,
-    apple: `${siteConfig.origin}/icons/apple-touch-icon.png`,
+    apple: `${siteConfig.origin}/icons/brand-icon-photo.png`,
   },
   manifest: `${siteConfig.origin}/manifest.webmanifest`,
 };

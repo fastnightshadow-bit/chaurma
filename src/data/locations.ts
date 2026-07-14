@@ -13,7 +13,7 @@ const dailySchedule = Array.from({ length: 7 }, (_, day) => ({
 export const locations = [
   {
     id: "frunze-46b",
-    name: "Shaurma Halal 1",
+    name: "Шаурма Халяль 1",
     address: "просп. Фрунзе, 46Б, Ярославль",
     streetAddress: "просп. Фрунзе, 46Б",
     postalCode: "150006",

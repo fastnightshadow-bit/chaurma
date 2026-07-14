@@ -32,6 +32,8 @@ export function createRestaurantStructuredData(
         "@id": `${config.origin}/#${location.id}`,
         name: location.name,
         url: config.origin,
+        image: `${config.origin}/images/brand/og-shawarma-no1.png`,
+        hasMenu: `${config.origin}/#menu`,
         hasMap: location.mapUrl,
         telephone: location.phone,
         address: {

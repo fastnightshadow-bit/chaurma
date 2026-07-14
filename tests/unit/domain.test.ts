@@ -27,6 +27,17 @@ test("accepts the centralized project data", () => {
   );
 });
 
+test("uses one search-friendly public brand name", () => {
+  assert.equal(siteConfig.name, "Шаурма Халяль 1");
+  assert.equal(siteConfig.shortName, "Шаурма Халяль 1");
+  assert.equal(
+    siteConfig.seo.title,
+    "Шаурма Халяль 1 в Ярославле — меню и цены",
+  );
+  assert.ok(siteConfig.seo.description.includes("проспекте Фрунзе, 46Б и 75"));
+  assert.ok(locations.every(({ name }) => name === siteConfig.name));
+});
+
 test("matches the verified Yandex Food menu source", () => {
   assert.deepEqual(
     menuCategories.map(({ id, name }) => ({ id, name })),
@@ -356,8 +367,13 @@ test("publishes only confirmed location facts in Restaurant JSON-LD", () => {
   assert.ok(frunze46b);
   assert.ok(frunze75);
 
-  assert.equal(frunze46b.name, "Shaurma Halal 1");
+  assert.equal(frunze46b.name, "Шаурма Халяль 1");
   assert.equal(frunze46b.telephone, "+79997994564");
+  assert.equal(
+    frunze46b.image,
+    `${siteConfig.origin}/images/brand/og-shawarma-no1.png`,
+  );
+  assert.equal(frunze46b.hasMenu, `${siteConfig.origin}/#menu`);
   assert.deepEqual(frunze46b.geo, {
     "@type": "GeoCoordinates",
     latitude: 57.587358,

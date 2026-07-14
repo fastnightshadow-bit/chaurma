@@ -28,7 +28,7 @@ export function HeroSection() {
         </picture>
       </div>
       <div className={styles.heroContent}>
-        <p className={styles.eyebrow}>Шаурма №1 Халял</p>
+        <p className={styles.eyebrow}>{siteConfig.name}</p>
         <h1 id="hero-title">{siteConfig.heroTitle}</h1>
         <p>{siteConfig.heroSubtitle}</p>
         <button
