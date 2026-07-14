@@ -5,8 +5,9 @@ export const siteConfig = {
   shortName: "Шаурма Халяль 1",
   origin: "https://fastnightshadow-bit.github.io/chaurma",
   currency: "RUB",
-  heroTitle: "Сочная шаурма. Горячая. Халял.",
-  heroSubtitle: "Готовим только после заказа.",
+  heroTitle: "Горячая шаурма с щедрой начинкой",
+  heroSubtitle:
+    "Готовим после заказа: много мяса, свежие овощи и фирменный соус.",
   cartStorageKey: "shawarma-no1-cart-v1",
   cartMaxAgeHours: 24,
   routeUrlTemplate: "https://yandex.ru/maps/?rtext=~{lat},{lng}&rtt=auto",

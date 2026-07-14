@@ -34,6 +34,11 @@ test("uses one search-friendly public brand name", () => {
     siteConfig.seo.title,
     "Шаурма Халяль 1 в Ярославле — меню и цены",
   );
+  assert.equal(siteConfig.heroTitle, "Горячая шаурма с щедрой начинкой");
+  assert.equal(
+    siteConfig.heroSubtitle,
+    "Готовим после заказа: много мяса, свежие овощи и фирменный соус.",
+  );
   assert.ok(siteConfig.seo.description.includes("проспекте Фрунзе, 46Б и 75"));
   assert.ok(locations.every(({ name }) => name === siteConfig.name));
 });
