@@ -7,8 +7,12 @@ const projectRoot = fileURLToPath(new URL("../..", import.meta.url));
 const brandImagesPath = `${projectRoot}/public/images/brand`;
 const ogImagePath = `${brandImagesPath}/og-shawarma-no1.png`;
 const iconSourcePath = `${projectRoot}/public/icons/brand-icon-photo.png`;
-const iconSvgPath = `${projectRoot}/public/icons/icon.svg`;
 const layoutPath = `${projectRoot}/src/app/layout.tsx`;
+const manifestPath = `${projectRoot}/public/manifest.webmanifest`;
+const topBarPath = `${projectRoot}/src/components/layout/TopBar.tsx`;
+const progressPath = `${projectRoot}/src/components/progress/ShawarmaProgress.tsx`;
+const emptyStatePath = `${projectRoot}/src/components/ui/EmptyState.tsx`;
+const componentStylesPath = `${projectRoot}/src/components/site.module.css`;
 
 test("publishes the production social preview without placeholder assets", () => {
   assert.equal(existsSync(ogImagePath), true, "production OG image is missing");
@@ -29,7 +33,7 @@ test("publishes the production social preview without placeholder assets", () =>
   assert.equal(existsSync(`${brandImagesPath}/og-placeholder.svg`), false);
 });
 
-test("uses the supplied high-resolution shawarma image in the brand icon", () => {
+test("uses the supplied high-resolution shawarma image directly in every brand icon", () => {
   assert.equal(existsSync(iconSourcePath), true, "brand icon photo is missing");
 
   const iconSource = readFileSync(iconSourcePath);
@@ -40,6 +44,32 @@ test("uses the supplied high-resolution shawarma image in the brand icon", () =>
   assert.equal(iconSource.readUInt32BE(16), 1024);
   assert.equal(iconSource.readUInt32BE(20), 1536);
 
-  const iconSvg = readFileSync(iconSvgPath, "utf8");
-  assert.match(iconSvg, /brand-icon-photo\.png/);
+  for (const filePath of [
+    layoutPath,
+    manifestPath,
+    topBarPath,
+    progressPath,
+    emptyStatePath,
+  ]) {
+    const source = readFileSync(filePath, "utf8");
+    assert.match(source, /brand-icon-photo\.png/);
+    assert.doesNotMatch(source, /icons\/icon\.svg/);
+  }
+});
+
+test("keeps the mobile hero title compact without changing the desktop title", () => {
+  const styles = readFileSync(componentStylesPath, "utf8");
+
+  assert.match(
+    styles,
+    /\.hero h1\s*{[^}]*font-size:\s*30px;[^}]*line-height:\s*34px;/s,
+  );
+  assert.match(
+    styles,
+    /@media \(max-width: 374px\)[\s\S]*?\.hero h1\s*{[^}]*font-size:\s*28px;[^}]*line-height:\s*32px;/,
+  );
+  assert.match(
+    styles,
+    /@media \(min-width: 761px\)[\s\S]*?\.hero h1\s*{[^}]*font-size:\s*36px;[^}]*line-height:\s*40px;/,
+  );
 });

@@ -12,7 +12,7 @@ export function EmptyState({
     <div className={styles.emptyState}>
       <Image
         className={styles.emptyStateIcon}
-        src={publicPath("/icons/icon.svg")}
+        src={publicPath("/icons/brand-icon-photo.png")}
         alt=""
         width={64}
         height={64}

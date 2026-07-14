@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     images: [socialImageUrl],
   },
   icons: {
-    icon: `${siteConfig.origin}/icons/icon.svg`,
+    icon: `${siteConfig.origin}/icons/brand-icon-photo.png`,
     apple: `${siteConfig.origin}/icons/brand-icon-photo.png`,
   },
   manifest: `${siteConfig.origin}/manifest.webmanifest`,

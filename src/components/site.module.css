@@ -47,6 +47,9 @@
   display: block;
   width: 32px;
   height: 32px;
+  border-radius: 7px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .brandText {
@@ -273,6 +276,9 @@
   display: block;
   width: 28px;
   height: 28px;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: center;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.24));
 }
 
@@ -396,8 +402,8 @@
 .hero h1 {
   max-width: 420px;
   margin: 0;
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 30px;
+  line-height: 34px;
   font-weight: 800;
   letter-spacing: 0;
 }
@@ -1099,6 +1105,9 @@
 .emptyStateIcon {
   width: 64px;
   height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
 }
 .emptyState h3 {
   margin: 14px 0 4px;
@@ -1478,8 +1487,8 @@
     clip: rect(0 0 0 0);
   }
   .hero h1 {
-    font-size: 32px;
-    line-height: 36px;
+    font-size: 28px;
+    line-height: 32px;
   }
   .brandText {
     display: block;
@@ -1507,6 +1516,10 @@
   }
   .hero {
     min-height: 620px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    line-height: 40px;
   }
   .heroVisual::after {
     background:

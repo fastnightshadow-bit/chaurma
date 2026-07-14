@@ -40,7 +40,7 @@ export function TopBar() {
       <div className={styles.topBarMain}>
         <span className={styles.brandMark} aria-hidden="true">
           <Image
-            src={publicPath("/icons/icon.svg")}
+            src={publicPath("/icons/brand-icon-photo.png")}
             alt=""
             width={32}
             height={32}

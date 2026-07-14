@@ -32,7 +32,7 @@ export function ShawarmaProgress() {
       <div className={styles.progressTrack} aria-hidden="true" />
       <span className={styles.progressShawarma} aria-hidden="true">
         <Image
-          src={publicPath("/icons/icon.svg")}
+          src={publicPath("/icons/brand-icon-photo.png")}
           alt=""
           width={28}
           height={28}
